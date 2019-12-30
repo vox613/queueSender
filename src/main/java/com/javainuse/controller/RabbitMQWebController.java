@@ -6,26 +6,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.javainuse.model.Employee;
+import com.javainuse.model.Message;
 import com.javainuse.service.RabbitMQSender;
 
 @RestController
-@RequestMapping(value = "/javainuse-rabbitmq/")
+@RequestMapping(value = "/")
 public class RabbitMQWebController {
 
-	@Autowired
-	RabbitMQSender rabbitMQSender;
+    private RabbitMQSender rabbitMQSender;
 
-	@GetMapping(value = "/producer")
-	public String producer(@RequestParam("empName") String empName,@RequestParam("empId") String empId) {
-	
-	Employee emp=new Employee();
-	emp.setEmpId(empId);
-	emp.setEmpName(empName);
-		rabbitMQSender.send(emp);
-
-		return "Message sent to the RabbitMQ JavaInUse Successfully";
+    @Autowired
+	public RabbitMQWebController(RabbitMQSender rabbitMQSender) {
+        this.rabbitMQSender = rabbitMQSender;
 	}
+
+	@GetMapping(value = "/msg")
+    public String producer(@RequestParam("text") String msgText) {
+        Message msg = new Message();
+		msg.setMsgText(msgText);
+        rabbitMQSender.send(msg);
+        return "Message sent to the RabbitMQ Successfully";
+    }
 
 }
 

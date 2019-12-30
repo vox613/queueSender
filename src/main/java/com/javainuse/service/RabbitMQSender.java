@@ -5,24 +5,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.javainuse.model.Employee;
+import com.javainuse.model.Message;
 
 @Service
 public class RabbitMQSender {
-	
-	@Autowired
-	private AmqpTemplate amqpTemplate;
-	
-	@Value("${javainuse.rabbitmq.exchange}")
+
+	@Value("${rabbitmq.exchange}")
 	private String exchange;
-	
-	@Value("${javainuse.rabbitmq.routingkey}")
-	private String routingkey;	
-	String kafkaTopic = "java_in_use_topic";
-	
-	public void send(Employee company) {
-		amqpTemplate.convertAndSend(exchange, routingkey, company);
-		System.out.println("Send msg = " + company);
+
+	@Value("${rabbitmq.routingkey}")
+	private String routingkey;
+
+	private AmqpTemplate amqpTemplate;
+
+
+	@Autowired
+	public RabbitMQSender(AmqpTemplate amqpTemplate) {
+		this.amqpTemplate = amqpTemplate;
+	}
+
+	public void send(Message message) {
+		amqpTemplate.convertAndSend(exchange, routingkey, message);
+		System.out.println("Send msg = " + message);
 	    
 	}
 }
