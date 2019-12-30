@@ -1,10 +1,7 @@
 package com.javainuse.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.javainuse.model.Message;
 import com.javainuse.service.RabbitMQSender;
@@ -20,12 +17,15 @@ public class RabbitMQWebController {
         this.rabbitMQSender = rabbitMQSender;
 	}
 
-	@GetMapping(value = "/msg")
-    public String producer(@RequestParam("text") String msgText) {
-        Message msg = new Message();
-		msg.setMsgText(msgText);
-        rabbitMQSender.send(msg);
-        return "Message sent to the RabbitMQ Successfully";
+
+    // localhost:8080/msg/?text=123
+
+
+    @PostMapping("/msg")
+    private String postProducer(@RequestBody Message messageEntity) {
+        System.out.println("getMsgText = " + messageEntity.getMsgText());
+        rabbitMQSender.send(messageEntity);
+        return "index";
     }
 
 }

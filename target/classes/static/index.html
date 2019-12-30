@@ -1,5 +1,29 @@
-<form action="action_form.php" method="POST">
-    Имя пользователя:<br>
-    <input type="text" name="firstname"><br>
-    <input type="submit">
+
+<!--<form action="/msg" method="POST">-->
+<!--    Enter message:<br>-->
+<!--    <input type="text" name="msgText"><br>-->
+<!--    <input type="submit">-->
+<!--</form>-->
+
+
+<form name="person">
+    <input name="name" value="Виктор">
+    <input name="surname" value="Цой">
 </form>
+
+<script>
+    var xhr = new XMLHttpRequest();
+
+    var json = JSON.stringify({
+        name: "Виктор",
+        surname: "Цой"
+    });
+
+    xhr.open("POST", '/submit', true)
+    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    
+
+    // Отсылаем объект в формате JSON и с Content-Type application/json
+    // Сервер должен уметь такой Content-Type принимать и раскодировать
+    xhr.send(json);
+</script>

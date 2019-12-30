@@ -4,7 +4,7 @@ package com.javainuse.model;
 public class Message {
 
 	private String msgText;
-
+	
 	public String getMsgText() {
 		return msgText;
 	}
